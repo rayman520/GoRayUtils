@@ -1,6 +1,30 @@
 package rayUtils
 
-import "strings"
+import (
+	"strings"
+	"unicode"
+)
+
+func BooleanTranslate(str string) bool {
+	return IsContainedInStringArray(strings.ToLower(str), GetBooleanTrueTranslator())
+}
+
+func CamelCase(str string, upper bool) string {
+	str = strings.TrimSpace(str)
+	buffer := make([]rune, 0, len(str))
+	var prev rune
+	for _, curr := range str {
+		if !IsDelimiter(curr) {
+			if IsDelimiter(prev) || (upper && prev == 0) {
+				buffer = append(buffer, unicode.ToUpper(curr))
+			} else {
+				buffer = append(buffer, unicode.ToLower(curr))
+			}
+		}
+		prev = curr
+	}
+	return string(buffer)
+}
 
 func FindNextBracketIndex(str []byte, endchar byte) int {
 	i := 0
@@ -16,6 +40,10 @@ func FindNextBracketIndex(str []byte, endchar byte) int {
 		i++
 	}
 	return 0
+}
+
+func IsDelimiter(ch rune) bool {
+	return unicode.IsSpace(ch) || ch == '-' || ch == '_'
 }
 
 func RemoveSubstringsFromString(str string, substrs []string) string {

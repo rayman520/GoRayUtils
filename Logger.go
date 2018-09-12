@@ -3,24 +3,8 @@ package rayUtils
 import (
 	"container/list"
 	"fmt"
-	"os"
 	"time"
 )
-
-const (
-	LOGDEBUG uint8 = iota
-	LOGINFO
-	LOGWARN
-	LOGERROR
-	LOGFATAL
-	LOGRAW
-)
-
-type Logger struct {
-	loglvl     uint8
-	log        *list.List
-	fileOutput *os.File
-}
 
 func NewLogger() Logger {
 	logger := Logger{}
@@ -92,4 +76,23 @@ func (l Logger) Log(loglvl uint8, str string, args ...interface{}) {
 			fmt.Fprint(l.fileOutput, strout)
 		}
 	}
+}
+
+func (l Logger) LogFatal(str string, args ...interface{}) {
+	l.Log(LOGFATAL, str, args...)
+}
+func (l Logger) LogError(str string, args ...interface{}) {
+	l.Log(LOGERROR, str, args...)
+}
+func (l Logger) LogWarn(str string, args ...interface{}) {
+	l.Log(LOGWARN, str, args...)
+}
+func (l Logger) LogInfo(str string, args ...interface{}) {
+	l.Log(LOGINFO, str, args...)
+}
+func (l Logger) LogDebug(str string, args ...interface{}) {
+	l.Log(LOGDEBUG, str, args...)
+}
+func (l Logger) LogRaw(str string, args ...interface{}) {
+	l.Log(LOGRAW, str, args...)
 }

@@ -1,10 +1,11 @@
 package rayUtils
 
 import (
-	"path/filepath"
-	"os"
 	"bufio"
 	"io/ioutil"
+	"os"
+	"os/exec"
+	"path/filepath"
 )
 
 func CreateDir(path string) bool {
@@ -19,9 +20,15 @@ func CreateDir(path string) bool {
 	return true
 }
 
+func MoveFile(inpath, outpath string) {
+	CreateDir(outpath)
+	cmd := exec.Command("mv", inpath, outpath)
+	ExecPrintCmd(cmd)
+}
+
 func ReadFileContent(path string) (string, error) {
 	content, err := ioutil.ReadFile(path)
-	if err != nil{
+	if err != nil {
 		return "", err
 	}
 	return string(content), err

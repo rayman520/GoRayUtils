@@ -6,11 +6,11 @@ import (
 	"time"
 )
 
-func NewLogger() Logger {
+func NewLogger(name string) Logger {
 	logger := Logger{}
 	logger.loglvl = LOGINFO
 	logger.log = list.New()
-
+	logger.name = name
 	return logger
 }
 
@@ -62,7 +62,7 @@ func (l Logger) Log(loglvl uint8, str string, args ...interface{}) {
 	}
 
 	if lvl < 5 {
-		strout = fmt.Sprintf("HexTranslate - %s - [%s\033[0m]:\t%s\n", time.Now().Format("2006-01-02 15:04:05"), loglvlStr, fmt.Sprintf(str, args...))
+		strout = fmt.Sprintf("%s - %s - [%s\033[0m]:\t%s\n", l.name, time.Now().Format("2006-01-02 15:04:05"), loglvlStr, fmt.Sprintf(str, args...))
 	} else {
 		strout = fmt.Sprintf("%s", fmt.Sprintf(str, args...))
 	}

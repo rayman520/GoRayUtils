@@ -16,7 +16,7 @@ func GetBracketOppositesMap() map[byte]byte {
 func GetBooleanTrueTranslator() []string {
 	if rayUtilsGlobals.BooleanTrueTranslator == nil {
 		rayUtilsGlobals.BooleanTrueTranslator = []string{
-			"true", "y", "yes",
+			"true", "y", "yes", "1",
 		}
 	}
 	return rayUtilsGlobals.BooleanTrueTranslator

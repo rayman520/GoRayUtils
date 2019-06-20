@@ -7,12 +7,14 @@ import (
 
 // globals
 
-var rayUtilsGlobals RayUtilsGlobals
+var rayUtilsGlobals = RayUtilsGlobals{
+	Logger: NewLogger("logger"),
+}
 
 type RayUtilsGlobals struct {
 	BooleanTrueTranslator []string
-	BracketOppositesMap map[byte]byte
-	Logger Logger
+	BracketOppositesMap   map[byte]byte
+	Logger                Logger
 }
 
 // logger
@@ -29,6 +31,6 @@ const (
 type Logger struct {
 	loglvl     uint8
 	log        *list.List
+	name       string
 	fileOutput *os.File
 }
-

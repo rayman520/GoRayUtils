@@ -26,6 +26,33 @@ func CamelCase(str string, upper bool) string {
 	return string(buffer)
 }
 
+func ContainsAnyPrefix(str string, subs []string) (string, bool) {
+	for _, sub := range subs {
+		if strings.HasPrefix(str, sub) {
+			return sub, true
+		}
+	}
+	return "", false
+}
+
+func ContainsAnySubstr(str string, subs []string) (string, bool) {
+	for _, sub := range subs {
+		if strings.Contains(str, sub) {
+			return sub, true
+		}
+	}
+	return "", false
+}
+
+func ContainsAnySuffix(str string, subs []string) (string, bool) {
+	for _, sub := range subs {
+		if strings.HasSuffix(str, sub) {
+			return sub, true
+		}
+	}
+	return "", false
+}
+
 func FindNextBracketIndex(str []byte, endchar byte) int {
 	i := 0
 	len := len(str)
@@ -35,7 +62,7 @@ func FindNextBracketIndex(str []byte, endchar byte) int {
 			return i + 1
 		}
 		if bracketOpposites[str[i]] != 0 {
-			i += FindNextBracketIndex(str[i + 1:], bracketOpposites[str[i]])
+			i += FindNextBracketIndex(str[i+1:], bracketOpposites[str[i]])
 		}
 		i++
 	}
@@ -66,23 +93,29 @@ func SplitIgnoreBrackets(rawString string, char byte) []string {
 	BracketOppositesOpposites := InvertMapOfBytes(GetBracketOppositesMap())
 	for CurrentIndex < len {
 		if str[CurrentIndex] == char {
-			outstr := str[startIndex : CurrentIndex]
-			if outstr[0] == char {outstr = outstr[1:]}
+			outstr := str[startIndex:CurrentIndex]
+			if outstr[0] == char {
+				outstr = outstr[1:]
+			}
 			out = append(out, string(outstr))
 			startIndex = CurrentIndex
 		}
 		if BracketOpposites[str[CurrentIndex]] != 0 {
-			CurrentIndex += FindNextBracketIndex(str[CurrentIndex + 1:], BracketOpposites[str[CurrentIndex]])
-		} else if BracketOppositesOpposites[str[CurrentIndex]] != 0{
-			outstr := str[startIndex : CurrentIndex]
-			if outstr[0] == char {outstr = outstr[1:]}
+			CurrentIndex += FindNextBracketIndex(str[CurrentIndex+1:], BracketOpposites[str[CurrentIndex]])
+		} else if BracketOppositesOpposites[str[CurrentIndex]] != 0 {
+			outstr := str[startIndex:CurrentIndex]
+			if outstr[0] == char {
+				outstr = outstr[1:]
+			}
 			out = append(out, string(outstr))
 			startIndex = CurrentIndex
 		}
 		CurrentIndex++
 	}
-	outstr := str[startIndex : CurrentIndex]
-	if outstr[0] == char {outstr = outstr[1:]}
+	outstr := str[startIndex:CurrentIndex]
+	if outstr[0] == char {
+		outstr = outstr[1:]
+	}
 	out = append(out, string(outstr))
 	return out
 }
